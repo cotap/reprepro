@@ -25,7 +25,7 @@ nginx_install 'default' do
   default_site_enabled false
 end
 
-template "#{node['nginx']['dir']}/sites-available/apt_repo" do
+config = template "#{node['nginx']['dir']}/sites-available/apt_repo" do
   source 'apt_repo.nginx.erb'
   mode '0644'
   owner 'root'
@@ -33,11 +33,15 @@ template "#{node['nginx']['dir']}/sites-available/apt_repo" do
   variables(
     repo_dir: node['reprepro']['repo_dir']
   )
-  notifies :reload, 'service[nginx]'
 end
 
 nginx_site 'apt_repo'
 
 nginx_site 'default' do
   action :disable
+end
+
+service 'nginx' do
+  action :restart
+  only_if { config.updated_by_last_action? }
 end
