@@ -21,7 +21,7 @@
 # The recipe does not assume how you install nginx certificate if you use ssl
 
 nginx_install 'default' do
-  source 'repo'
+  source 'distro'
   default_site_enabled false
 end
 
