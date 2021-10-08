@@ -34,6 +34,8 @@ server {
   ssl_certificate <%= node['nginx']['ssl_certificate'] %>;
   ssl_certificate_key <%= node['nginx']['ssl_certificate_key'] %>;
 
+  add_header Strict-Transport-Security "max-age=31536000; includeSubDomains" always;
+
   location / {
     root <%= @repo_dir %>;
     autoindex  on;
