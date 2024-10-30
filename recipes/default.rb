@@ -26,7 +26,8 @@ unless node['reprepro']['disable_databag']
     node['reprepro'].each_key do |key|
       next if key.to_sym == :pgp
       # NOTE: Use #key? so data bags can nil out existing values
-      node.default['reprepro'][key] = apt_repo[key] if apt_repo.key?(key)
+      apt_repo_hash = apt_repo.to_hash
+      node.default['reprepro'][key] = apt_repo_hash[key] if apt_repo_hash.key?(key)
     end
     node.default['reprepro']['pgp_email'] = apt_repo['pgp']['email']
     node.default['reprepro']['pgp_fingerprint'] = apt_repo['pgp']['fingerprint']
